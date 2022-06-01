@@ -2,19 +2,10 @@
   import { words, possibilities } from "./stores";
   import { onMount } from "svelte";
   import Suggestions from "./Suggestions.svelte";
-  import WordHolder from "./word/WordHolder.svelte";
+  import Board from "./Board.svelte";
+  import Keyboard from "./Keyboard.svelte";
 
   export let firstWord: string;
-
-  const onKeyDown = (e) => {
-    if (e.key.match(/\b[a-z]\b/i)) {
-      words.addLetter(e.key);
-    } else if (e.key === "Backspace") {
-      words.backSpace();
-    } else if (e.key === "Enter") {
-      words.nextWord();
-    }
-  };
 
   onMount(() => words.useSuggestion(firstWord));
 </script>
@@ -22,9 +13,7 @@
 <main>
   <boardArea>
     <board>
-      {#each $words as word, wordPosition}
-        <WordHolder letters={word} {wordPosition} />
-      {/each}
+      <Board />
     </board>
     <sugestions>
       <Suggestions />
@@ -34,7 +23,7 @@
     Possibilities={$possibilities.length}
   </footer>
 </main>
-<svelte:window on:keydown={onKeyDown} />
+<Keyboard />
 
 <style>
   main {
