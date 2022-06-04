@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { words, possibilities } from "./stores";
+  import { letters, possibilities } from "./stores";
   import { onMount } from "svelte";
   import Suggestions from "./Suggestions.svelte";
   import Board from "./Board.svelte";
@@ -7,7 +7,7 @@
 
   export let firstWord: string;
 
-  onMount(() => words.useSuggestion(firstWord));
+  onMount(() => letters.useSuggestion(firstWord));
 </script>
 
 <main>

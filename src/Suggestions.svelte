@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { possibilities, words } from "./stores";
+  import { possibilities, letters } from "./stores";
   let selectedSuggestion: string;
 
   function selectionChanged() {
-    words.useSuggestion(selectedSuggestion);
+    letters.useSuggestion(selectedSuggestion);
   }
 </script>
 

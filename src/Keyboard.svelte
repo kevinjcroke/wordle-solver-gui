@@ -1,12 +1,10 @@
 <script lang="ts">
-  import { words } from "./stores";
+  import { letters } from "./stores";
   const onKeyDown = (e: { key: string }) => {
     if (e.key.match(/\b[a-z]\b/i)) {
-      words.addLetter(e.key);
+      letters.addLetter(e.key);
     } else if (e.key === "Backspace") {
-      words.backSpace();
-    } else if (e.key === "Enter") {
-      words.nextWord();
+      letters.backSpace();
     }
   };
 </script>

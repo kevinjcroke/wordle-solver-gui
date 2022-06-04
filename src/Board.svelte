@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { words } from "./stores";
+  import { board } from "./stores";
   import WordHolder from "./word/WordHolder.svelte";
 </script>
 
-{#each $words as word, wordPosition}
+{#each $board as word, wordPosition}
   <WordHolder letters={word} {wordPosition} />
 {/each}

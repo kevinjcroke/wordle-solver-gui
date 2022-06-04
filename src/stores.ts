@@ -2,83 +2,45 @@ import type { Letter } from "./word/Letter";
 import { LetterState } from "./word/Letter";
 import { writable, derived } from 'svelte/store';
 import solver from './solver/findPossibleWords'
-import { tick } from "svelte";
 
 
 function createGameState() {
-    let initialWords: Letter[][] = [[]];
-    let currentState: Letter[][];
-    let localCurrentWord = 0;
+    let initialWords: Letter[] = [];
 
-    const { subscribe, set, update } = writable([...initialWords]);
-    subscribe(s => currentState = s); // I don't like this. There's gotta be a better way
+    const { subscribe, set, update } = writable(initialWords);
 
-    const currentWord = writable(localCurrentWord);
-    currentWord.subscribe(c => localCurrentWord = c);
-
-
-    async function addLetter(letter: string) {
+    function addLetter(letter: string) {
         let newLetter: Letter = { state: LetterState.Empty, letter: letter.toUpperCase() };
-        if (isCurrentWordComplete()) {
-            nextWord();
-            await tick();
-        }
+        update(l => [...l, newLetter]);
+    }
 
-        update(w => {
-            return [...w.slice(0, localCurrentWord), [...w[localCurrentWord], newLetter]]
+    const backSpace = () => update(l => l.length === 0 ? l : l.slice(0, l.length - 1));
+
+    const reset = () => set([...initialWords]);
+
+    function useSuggestion(word: string) {
+        // turn the word into an array of letters
+        let newWord = word?.split("").map(item => ({ state: LetterState.Tbd, letter: item })) ?? [];
+
+        update(l => {
+            let currentWord = Math.floor((l.length + 1) / 5);
+            let startOfCurrentWord = currentWord * 5;
+            return [...l.slice(0, startOfCurrentWord), ...newWord];
         });
     }
 
-    function backSpace() {
-        update(w => {
-            if (w[localCurrentWord].length === 0) {
-                currentWord.update(c => Math.max(0, c - 1));
-            }
-
-            return [...w.slice(0, localCurrentWord), w[localCurrentWord].slice(0, w[localCurrentWord].length - 1)];
-        })
-    }
-
-    function isCurrentWordComplete() {
-        console.log(localCurrentWord);
-        console.log(currentState[localCurrentWord]);
-        console.log(currentState[localCurrentWord].length)
-        return (currentState[localCurrentWord].length === 5);
-    }
-
-    function nextWord() {
-        if (isCurrentWordComplete()) {
-            currentWord.update(c => c + 1);
-            update(w => [...w, []]);
-        }
-    }
-
-    function reset() {
-        currentWord.set(0);
-        set([...initialWords]);
-    }
-
-    function useSuggestion(word: string) {
-        let newWord = word?.split("").map(item => ({ state: LetterState.Tbd, letter: item })) ?? [];
-        nextWord();
-        update(w => [...w.slice(0, localCurrentWord), newWord]);
-    }
-
     // Sets the state (correct, missing, etc) for a specific letter
-    function defineLetterState(word: number, letter: number, letterState: LetterState) {
-        update(w => {
+    function defineLetterState(wordIndex: number, letterIndex: number, letterState: LetterState) {
+        let index = wordIndex * 5 + letterIndex;
+        update(l => {
             let newLetter: Letter = {
                 state: letterState,
-                letter: w[word][letter].letter
+                letter: l[index].letter
             };
             const newState = [
-                ...w.slice(0, word),
-                [
-                    ...w[word].slice(0, letter),
-                    newLetter,
-                    ...w[word].slice(letter + 1)
-                ],
-                ...w.slice(word + 1)
+                ...l.slice(0, index),
+                newLetter,
+                ...l.slice(index + 1)
             ];
 
             return newState;
@@ -89,12 +51,22 @@ function createGameState() {
         subscribe,
         addLetter,
         backSpace,
-        nextWord,
         reset,
         useSuggestion,
         defineLetterState
     }
 }
 
-export const words = createGameState();
-export const possibilities = derived(words, $words => solver($words));
+function makeBoard(letters: Letter[]): Letter[][] {
+    const wordSize = 5;
+    let board: Letter[][] = [];
+    for (let i = 0; i < letters.length; i += wordSize) {
+        const chunk = letters.slice(i, i + wordSize);
+        board.push(chunk);
+    }
+    return board;
+}
+
+export const letters = createGameState();
+export const board = derived(letters, $words => makeBoard($words));
+export const possibilities = derived(board, $board => solver($board));

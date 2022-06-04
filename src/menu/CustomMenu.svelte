@@ -2,7 +2,7 @@
   import Menu from "./Menu.svelte";
   import MenuOption from "./MenuOption.svelte";
   import { LetterState } from "../word/Letter";
-  import { words } from "../stores";
+  import { letters } from "../stores";
 
   export let wordPosition: number;
   export let letterPosition: number;
@@ -25,7 +25,7 @@
   }
 
   function SetState(state: LetterState) {
-    words.defineLetterState(wordPosition, letterPosition, state);
+    letters.defineLetterState(wordPosition, letterPosition, state);
     return true;
   }
 </script>
