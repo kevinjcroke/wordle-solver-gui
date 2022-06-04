@@ -1,10 +1,10 @@
-import allWords from "./wordleDictionary";
+import dictionary from "./wordleDictionary";
 import type { Letter } from "../word/Letter"
 import { LetterState } from "../word/Letter";
 
 export default function (guessedWords: Letter[][]) {
 
-    var result = allWords.filter(dictionaryWord => {
+    var result = dictionary.getDictionary().filter(dictionaryWord => {
         return guessedWords.length === 0 ?
             true :
             guessedWords.every(guessedWord => IsValidWordTest(dictionaryWord, guessedWord));
