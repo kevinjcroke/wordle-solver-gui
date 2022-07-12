@@ -1,7 +1,7 @@
 <script>
   import { setContext, createEventDispatcher } from "svelte";
   import { fade } from "svelte/transition";
-  import { key } from "./menu.js";
+  import { key } from "./menu";
 
   export let x;
   export let y;

@@ -7,7 +7,11 @@
   let showMenu;
 </script>
 
-<div class="holder" on:contextmenu|preventDefault={showMenu}>
+<div
+  class="holder"
+  on:contextmenu|preventDefault={showMenu}
+  on:click|preventDefault|stopPropagation={showMenu}
+>
   <div class={letter.state}>
     {letter.letter}
     <CustomMenu {wordPosition} {letterPosition} bind:ShowMenu={showMenu} />
