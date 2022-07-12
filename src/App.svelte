@@ -40,7 +40,7 @@
     width: 310px;
     display: flex;
     flex-wrap: wrap;
-    text-align: center;
+    text-align: left;
     padding: 1em;
     margin: 0;
     padding: 0;

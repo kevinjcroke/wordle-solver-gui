@@ -1,6 +1,6 @@
 import type { Letter } from "./word/Letter";
 import { LetterState } from "./word/Letter";
-import { writable, derived } from 'svelte/store';
+import { writable, derived, get } from 'svelte/store';
 import solver from './solver/findPossibleWords'
 
 
@@ -30,8 +30,9 @@ function createGameState() {
     }
 
     // Sets the state (correct, missing, etc) for a specific letter
-    function defineLetterState(wordIndex: number, letterIndex: number, letterState: LetterState) {
-        let index = wordIndex * 5 + letterIndex;
+    function defineLetterState(letterState: LetterState) {
+        const context = get(menuContext);
+        let index = context.wordPosition * 5 + context.letterPosition;
         update(l => {
             let newLetter: Letter = {
                 state: letterState,

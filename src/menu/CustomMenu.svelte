@@ -2,8 +2,7 @@
   import Menu from "./Menu.svelte";
   import MenuOption from "./MenuOption.svelte";
   import { LetterState } from "../word/Letter";
-  import { letters, menuContext } from "../stores";
-  import { get } from "svelte/store";
+  import { letters } from "../stores";
 
   let pos = { x: 0, y: 0 };
   let showMenu = false;
@@ -23,12 +22,7 @@
   }
 
   function SetState(state: LetterState) {
-    const context = get(menuContext);
-    letters.defineLetterState(
-      context.wordPosition,
-      context.letterPosition,
-      state
-    );
+    letters.defineLetterState(state);
     return true;
   }
 </script>

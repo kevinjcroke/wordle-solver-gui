@@ -28,6 +28,7 @@
     border: 1px #3a3a3c solid;
     line-height: 60px;
     font-size: 55px;
+    text-align: center;
   }
 
   .present {
