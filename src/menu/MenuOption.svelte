@@ -15,7 +15,7 @@
   };
 </script>
 
-<div on:click={handleClick}>
+<div on:click|stopPropagation={handleClick}>
   {text}
 </div>
 

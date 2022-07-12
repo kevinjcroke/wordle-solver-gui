@@ -1,20 +1,22 @@
 <script lang="ts">
-  import CustomMenu from "../menu/CustomMenu.svelte";
   import type { Letter } from "./Letter";
+  import { menuContext } from "../stores";
   export let letter: Letter;
   export let wordPosition: number;
   export let letterPosition: number;
-  let showMenu;
+
+  const setMenuContext = () => {
+    menuContext.set({ wordPosition, letterPosition });
+  };
 </script>
 
 <div
   class="holder"
-  on:contextmenu|preventDefault={showMenu}
-  on:click|preventDefault|stopPropagation={showMenu}
+  on:contextmenu={setMenuContext}
+  on:click|preventDefault={setMenuContext}
 >
   <div class={letter.state}>
     {letter.letter}
-    <CustomMenu {wordPosition} {letterPosition} bind:ShowMenu={showMenu} />
   </div>
 </div>
 
