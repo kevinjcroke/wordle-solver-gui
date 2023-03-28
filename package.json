@@ -5,10 +5,10 @@
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
-    "start": "sirv public --no-clear",
+    "start": "sirv public --no-clear --host",
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "test": "jest",
-    "deploy": "npm build && git subtree push --prefix public origin gh-pages"
+    "deploy": "npm run build && git subtree push --prefix public origin gh-pages"
   },
   "devDependencies": {
     "@babel/core": "^7.18.2",

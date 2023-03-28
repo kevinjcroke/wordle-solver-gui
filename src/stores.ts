@@ -71,4 +71,6 @@ function makeBoard(letters: Letter[]): Letter[][] {
 export const letters = createGameState();
 export const board = derived(letters, $words => makeBoard($words));
 export const possibilities = derived(board, $board => solver($board));
+export const hundredPosibilities = derived(possibilities, $possibilities => $possibilities.slice(0, 100));
+export const posibilityCount = derived(possibilities, $possibilities => $possibilities.length);
 export const menuContext = writable({ wordPosition: 0, letterPosition: 0 });

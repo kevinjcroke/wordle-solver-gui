@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { letters, possibilities } from "./stores";
+  import { letters, posibilityCount } from "./stores";
   import { onMount } from "svelte";
   import Suggestions from "./Suggestions.svelte";
   import Board from "./Board.svelte";
@@ -20,7 +20,7 @@
     </sugestions>
   </boardArea>
   <footer>
-    Possibilities={$possibilities.length}
+    Possibilities={$posibilityCount}
   </footer>
 </main>
 <Keyboard />
@@ -59,9 +59,9 @@
     margin: 0;
     padding: 0;
   }
-  sugestions {
+  /* sugestions {
     display: flex;
     justify-content: right;
     padding-top: 10px;
-  }
+  } */
 </style>
